@@ -54,7 +54,7 @@ export default {
         },
         layer: {
           type: Number,
-          default: 1,
+          default: 0,
         },
         /* Colors */
         colorBackground: {
@@ -63,7 +63,7 @@ export default {
         },
         colorText: {
           type: String,
-          default: "black",
+          default: null,
         },
         colorBorder: {
           type: String,
@@ -118,19 +118,16 @@ export default {
           let cssStyle = [];
 
           // Config
-          cssStyle.push(`outline: none`);
-          if (colorBackground) {
+          if (colorBackground && colorBackground !== "transparent") {
             cssStyle.push(`background-color: ${getColor(colorBackground)}`);
           }
-          if (colorText) {
+          if (colorText && colorText !== "transparent") {
             cssStyle.push(`color: ${getColor(colorText)}`);
           }
-          if (colorBorder) {
+          if (colorBorder && colorBorder !== "transparent") {
             cssStyle.push(`border-color: ${getColor(colorBorder)}`);
             cssStyle.push(`border-width: ${borderSize}px`);
-            if (borderStyle) {
-              cssStyle.push(`border-style: ${borderStyle}`);
-            }
+            cssStyle.push(`border-style: ${borderStyle}`);
           }
           if (textCase) {
             let activeCase;
@@ -154,7 +151,9 @@ export default {
           if (cursor) {
             cssStyle.push(`cursor: ${cursor}`);
           }
-          cssStyle.push(`z-index: ${layer}`);
+          if (layer > 0) {
+            cssStyle.push(`z-index: ${layer}`);
+          }
           return cssStyle.join("; ");
         },
       },
@@ -187,5 +186,27 @@ export default {
     // (Element) Super Component
     app.component("base-app", AppBase);
     app.component("base-element", superElement);
+    app.config.globalProperties.$colors = Object.freeze(Colors);
+    app.config.globalProperties.$color = (vname, dark = false) => {
+      let colors = null;
+      if (dark) {
+        // Dark
+        colors = options.dark;
+      } else {
+        // Light
+        colors = options.light;
+      }
+      let name = vname;
+      if (vname === "color-1") {
+        name = colors[1];
+      }
+      if (vname === "color-2") {
+        name = colors[2];
+      }
+      if (vname === "color-3") {
+        name = colors[3];
+      }
+      return Colors[name] ? Colors[name] : name;
+    };
   },
 };
