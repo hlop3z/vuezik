@@ -53,7 +53,7 @@ export default {
           default: false,
         },
         layer: {
-          type: Number,
+          type: [Number, String],
           default: 0,
         },
         /* Colors */
@@ -70,7 +70,7 @@ export default {
           default: "transparent",
         },
         borderSize: {
-          type: Number,
+          type: [Number, String],
           default: 1,
         },
         borderStyle: {
