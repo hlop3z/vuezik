@@ -14,8 +14,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.js"),
-      name: "VueLib",
-      fileName: "bundle",
+      name: "vuezik",
+      fileName: "vuezik",
     },
     rollupOptions: {
       external: ["vue"],

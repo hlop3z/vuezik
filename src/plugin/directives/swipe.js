@@ -47,13 +47,17 @@ function handleTouchMove(e, method = null) {
 
 export default {
   beforeMount: (el, binding) => {
-    const handler = (evt) => handleTouchMove(evt, binding.value);
-    el.addEventListener("touchstart", handleTouchStart, { passive: true });
-    el.addEventListener("touchmove", handler, { passive: true });
+    el.handleTouchStartEvent = handleTouchStart;
+    el.handleTouchMoveEvent = (event) => handleTouchMove(event, binding.value);
+    el.addEventListener("touchstart", el.handleTouchStartEvent, {
+      passive: true,
+    });
+    el.addEventListener("touchmove", el.handleTouchMoveEvent, {
+      passive: true,
+    });
   },
   unmounted: (el) => {
-    const handler = (evt) => handleTouchMove(evt, binding.value);
-    el.removeEventListener("touchstart", handleTouchStart);
-    el.removeEventListener("touchmove", handler);
+    el.removeEventListener("touchstart", el.handleTouchStartEvent);
+    el.removeEventListener("touchmove", el.handleTouchMoveEvent);
   },
 };

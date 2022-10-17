@@ -1,13 +1,11 @@
-# Vuezik
-
-Tool for **Vue 3** | Easy **`v-model`** and **`<custom-components>`**.
+# **Vuezik** - Real **(SFC) Single-File Components** for Vue3
 
 `Vuezik` is pronounced like **music** but with `"Vue-"` instead of `"Mu-"`
 
 ## Information
 
 ```sh
-dist/bundle.js   14.34 KiB / gzip: 3.98 KiB
+dist/bundle.js | 34.37 KiB / gzip: 11.12 KiB
 ```
 
 ## Install
@@ -16,32 +14,17 @@ dist/bundle.js   14.34 KiB / gzip: 3.98 KiB
 npm install vuezik
 ```
 
-## Components
+## Uses
 
-| Name               | Description                                                                                                |
-| ------------------ | ---------------------------------------------------------------------------------------------------------- |
-| **`base-app`**     | `virtual` element that ensures that `$device` is always updated in case of a change to size of the screen. |
-| **`base-element`** | Customizable `<html-element>`.                                                                             |
+- [@emotion/css](https://emotion.sh/docs/@emotion/css)
 
----
+## **`$style`** (Global-Variable) | @Emotion-CSS
 
-## Directives
-
-| Name                  | Description                                    |
-| --------------------- | ---------------------------------------------- |
-| **`v-swipe`**         | Detects swipe **(`left, right, up, down`)**    |
-| **`v-click-outside`** | Detects click outside element                  |
-| **`v-resize`**        | Detects resize changes of the browser's window |
-
----
-
-## **`$config`** (Global-Variable)
-
-| Key         | Value                         |
-| ----------- | ----------------------------- |
-| **`title`** | Project's Name                |
-| **`debug`** | Debug Mode (default: `false`) |
-| **`dark`**  | Dark Mode (default: `false`)  |
+| Key             | Value        |
+| --------------- | ------------ |
+| **`css`**       | css          |
+| **`inject`**    | injectGlobal |
+| **`keyframes`** | keyframes    |
 
 ---
 
@@ -54,84 +37,180 @@ npm install vuezik
 | **`type`**   | Device's size abbreviation **(`xs, sm, md, lg, xl`)** (default: `xs`) |
 | **`is`**     | Device's size function to be used with `v-if` example below           |
 
-### Example
+---
+
+## **Directives**
+
+| Name                  | Description                                    |
+| --------------------- | ---------------------------------------------- |
+| **`v-swipe`**         | Detects swipe **(`left, right, up, down`)**    |
+| **`v-click-outside`** | Detects click outside element                  |
+| **`v-resize`**        | Detects resize changes of the browser's window |
+
+---
+
+## **Component**
+
+| Name            | Description                   |
+| --------------- | ----------------------------- |
+| **`x-element`** | Customizable `<html-element>` |
 
 ```html
-<div v-if='$device.is("xs", "sm")'>Show Content</div>
+<x-element x-resize class="app-div">
+  My App Container
+  <br />
+  {{ $device }}
+  <br />
+  <div v-if='$device.is("xs", "sm")'>Show Content Only On Devices(XS, SM)</div>
+</x-element>
 ```
 
-### Device Type `Code`
+### **Props**
 
-```js
-let deviceType = "xs";
-if (window.innerWidth < 600) {
-  deviceType = "xs";
-} else if (window.innerWidth > 600 && window.innerWidth < 960) {
-  deviceType = "sm";
-} else if (window.innerWidth > 960 && window.innerWidth < 1264) {
-  deviceType = "md";
-} else if (window.innerWidth > 1264 && window.innerWidth < 1904) {
-  deviceType = "lg";
-} else if (window.innerWidth > 1904) {
-  deviceType = "xl";
-}
+| Name           | Description                                        | Default | Type    |
+| -------------- | -------------------------------------------------- | ------- | ------- |
+| **`css`**      | **`@emotion/css`** **Object-Style** Based          | `{}`    | Object  |
+| **`tag`**      | `<html>` **element** type for example `button`     | `div`   | String  |
+| **`v-model`**  | Requires `x-hover`                                 | `false` | Boolean |
+| **`x-hover`**  | Track mouse **`hover`**                            | `false` | Boolean |
+| **`x-wheel`**  | Track mouse **`wheel`**                            | `false` | Boolean |
+| **`x-resize`** | Update `$device` variables. Use once's per project | `false` | Boolean |
+| **`active`**   | **Element** is **`active`** ?                      | `false` | Boolean |
+
+---
+
+### **CSS** (Prop)
+
+| Name                | Default | Type    | Emotion                                   |
+| ------------------- | ------- | ------- | ----------------------------------------- |
+| **`base`**          | `{}`    | Object  | Main CSS-Class (**Object-Style**)         |
+| **`hoverAndFocus`** | false   | Boolean | turn `hover` into **Hover-and-Focus**     |
+| **`hover`**         | `{}`    | Object  | `&:hover` or `&:hover,&:focus`            |
+| **`focus`**         | `{}`    | Object  | `&:focus`                                 |
+| **`active`**        | `{}`    | Object  | Active CSS-Class (**Object-Style**)       |
+| **`children`**      | `{}`    | Object  | Children CSS-Class(es) (**Object-Style**) |
+
+---
+
+### **CSS** (Only) Main
+
+- **`active`**
+
+**`active`** only works on the **Main (Object-Style)**
+
+### **CSS** Active & Children
+
+- **`base`**
+- **`hover`**
+- **`focus`**
+
+**`active & children`** only have **3 props**
+
+---
+
+### **Template**
+
+```html
+<template>
+  <x-element
+    :css="css"
+    tag="div"
+    v-model="hover"
+    x-hover
+    @xwheel="log"
+    x-wheel="horizontal"
+    :active="active"
+    @click="active = !active"
+  >
+    <div>
+      Hello World <br />
+      {{ active }} | {{ hover }}
+      <div class="children-class">Hola Mundo</div>
+    </div>
+  </x-element>
+</template>
 ```
 
 ---
 
-## Base **Element**
-
----
-
-### Example (**Simple**)
+### **Script**
 
 ```html
-<base-element tag="span"> Hello World </base-element>
+<script>
+  export default {
+    data() {
+      return {
+        active: true,
+        hover: false,
+      };
+    },
+    methods: {
+      log(text) {
+        console.log(text);
+      },
+    },
+    computed: {
+      css() {
+        return {
+          // Merge with Hover-And-Focus
+          hoverAndFocus: true,
+          // Base (Object)
+          base: {
+            // Base (Object-Style)
+            color: "black",
+            backgroundColor: "red",
+            fontSize: "60px",
+            textAlign: "center",
+          },
+          // Hover-And-Focus (Object-Style)
+          hover: {
+            color: "red",
+            backgroundColor: "black",
+          },
+          // Active (Object)
+          active: {
+            // Active (Object-Style)
+            base: {
+              color: "blue",
+              backgroundColor: "orange",
+              fontSize: "20px",
+            },
+            // Active-Hover (Object-Style)
+            hover: {
+              color: "white",
+              backgroundColor: "purple",
+            },
+          },
+          // Children (Objects)
+          children: {
+            "children-class": {
+              base: {
+                color: "orange",
+                backgroundColor: "darkorchid",
+              },
+              hover: {
+                color: "red",
+                backgroundColor: "darkorchid",
+              },
+              focus: {
+                color: "white",
+                backgroundColor: "darkorchid",
+              },
+            },
+          },
+        };
+      },
+    },
+  };
+</script>
 ```
-
-### Example (**Complex**)
-
-```html
-<base-element
-  tag="button"
-  text-case="upper"
-  color-text="green"
-  color-border="green"
-  color-background="white"
-  cursor="pointer"
-  border-style="dotted"
-  :border-size="1"
-  :layer="0"
-  dark
-  ripple
-  hover
->
-  <template v-slot="{ hover }">Button | {{ hover }}</template>
-</base-element>
-```
-
-### Props
-
-| Name                   | Description                                | Default       | Type    |
-| ---------------------- | ------------------------------------------ | ------------- | ------- |
-| **`tag`**              | `<html>` element type for example `button` | `div`         | String  |
-| **`text-case`**        | Options (**`title, upper, lower`**)        | none          | String  |
-| **`color-text`**       | Text Color (`css` or **palette**)          | `black`       | String  |
-| **`color-border`**     | Border color                               | `transparent` | String  |
-| **`color-background`** | Background color                           | `transparent` | String  |
-| **`cursor`**           | Cursor style                               | none          | String  |
-| **`border-style`**     | Border style (`css` or **palette**)        | `solid`       | String  |
-| **`border-size`**      | Border size in pixels                      | `1`           | Integer |
-| **`layer`**            | `z-index`                                  | `0`           | Integer |
-| **`dark`**             | Dark Mode                                  | `false`       | Boolean |
-| **`ripple`**           | Ripple effect                              | `false`       | Boolean |
-| **`hover`**            | Track `hover` over element                 | `false`       | Boolean |
 
 ---
 
 ## Vue-**Sync**
 
-Use `kebab-case` for the `sync` declaration.
+Use `kebab-case` for the `sync` declaration and as the attribute `<div v-model:kebab-case="value" />`
+
 Then, use `camelCase` for the actual `value` **inside the component**.
 
 ---

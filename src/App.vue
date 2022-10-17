@@ -1,19 +1,7 @@
-<template>
-  <Demo v-model:count="count" v-model:camel-case="camelCase"></Demo>
-</template>
-
-<script>
-import Demo from "./components/Demo.vue";
-
-export default {
-  components: { Demo },
-  data() {
-    return {
-      count: 1,
-      camelCase: "kebab-case",
-    };
-  },
-};
+<script setup>
+import HelloWorld from "./components/HelloWorld.vue";
 </script>
 
-<style scoped></style>
+<template>
+  <HelloWorld msg="You did it!" />
+</template>
