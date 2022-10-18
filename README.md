@@ -108,6 +108,42 @@ npm install vuezik
 
 ---
 
+### **Demo**
+
+```html
+<script>
+  export default {
+    computed: {
+      css() {
+        return {
+          base: {},
+          hover: {},
+          hoverAndFocus: true,
+          active: {
+            base: {},
+            hover: {},
+            focus: {},
+          },
+          children: {
+            "children-class": {
+              base: {},
+              hover: {},
+              focus: {},
+            },
+          },
+        };
+      },
+    },
+  };
+</script>
+```
+
+---
+
+## Example
+
+---
+
 ### **Template**
 
 ```html
