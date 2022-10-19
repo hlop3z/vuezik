@@ -5,7 +5,9 @@ export default {
 			event.deltaY < 0 ? (side = 'up') : (side = 'down');
 			binding.value({ el: el, side: side });
 		};
-		el.addEventListener('wheel', el.OnWheelEvent);
+		el.addEventListener('wheel', el.OnWheelEvent, {
+			passive: true,
+		});
 	},
 	destroyed(el) {
 		el.removeEventListener('wheel', el.OnWheelEvent);
