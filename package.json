@@ -1,10 +1,14 @@
 {
   "name": "vuezik",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "author": "hlop3z",
   "license": "MIT",
   "description": "Vue Easy Models & Components",
-  "keywords": ["vue", "reactive", "v-model"],
+  "keywords": [
+    "vue",
+    "reactive",
+    "v-model"
+  ],
   "type": "module",
   "module": "./dist/vuezik.js",
   "main": "./dist/vuezik.umd.cjs",
@@ -24,7 +28,7 @@
       "import": "./dist/vuezik.js",
       "require": "./dist/vuezik.umd.cjs"
     }
-  },  
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -32,7 +36,8 @@
   },
   "dependencies": {
     "@emotion/css": "^11.10.0",
-    "vue": "^3.2.38"
+    "vue": "^3.2.38",
+    "xtyle": "^1.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",

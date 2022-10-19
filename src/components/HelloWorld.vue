@@ -1,12 +1,10 @@
 <template>
   <x-element
-    @click="active = !active"
+    @click="active = active"
     :active="active"
+    hover
     v-model="hover"
-    x-hover
-    @xwheel="log"
-    x-wheel="horizontal"
-    x-resize
+    resize
     :css="css"
   >
     <div>
@@ -14,6 +12,18 @@
       {{ active }} | {{ hover }}
       <div class="my-class">Hola Mundo</div>
     </div>
+    <div
+      v-ripple
+      v-wheel="log"
+      v-swipe="log"
+      v-resize="log"
+      v-click-outside="log"
+    >
+      {{ $device }}
+    </div>
+    <button v-ripple="{ color: 'red', center: true, class: 'some-class' }">
+      Click Me
+    </button>
   </x-element>
 </template>
 <script>
@@ -25,8 +35,8 @@ export default {
     };
   },
   methods: {
-    log(text) {
-      console.log(text);
+    log(data) {
+      console.log(data);
     },
   },
   computed: {

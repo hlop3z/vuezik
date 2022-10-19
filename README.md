@@ -5,7 +5,7 @@
 ## Information
 
 ```sh
-dist/bundle.js | 34.37 KiB / gzip: 11.12 KiB
+dist/bundle.js | 39.75 KiB / gzip: 12.70 KiB
 ```
 
 ## Install
@@ -17,6 +17,7 @@ npm install vuezik
 ## Uses
 
 - [@emotion/css](https://emotion.sh/docs/@emotion/css)
+- [xtyle](https://github.com/hlop3z/xtyle)
 
 ## **`$style`** (Global-Variable) | @Emotion-CSS
 
@@ -25,6 +26,7 @@ npm install vuezik
 | **`css`**       | css          |
 | **`inject`**    | injectGlobal |
 | **`keyframes`** | keyframes    |
+| **`app`**       | **xtyle**    |
 
 ---
 
@@ -43,9 +45,39 @@ npm install vuezik
 
 | Name                  | Description                                    |
 | --------------------- | ---------------------------------------------- |
-| **`v-swipe`**         | Detects swipe **(`left, right, up, down`)**    |
-| **`v-click-outside`** | Detects click outside element                  |
+| **`v-ripple`**        | Ripple effect from **Material Design** Styling |
 | **`v-resize`**        | Detects resize changes of the browser's window |
+| **`v-click-outside`** | Detects click outside element                  |
+| **`v-swipe`**         | Detects swipe **(`left, right, up, down`)**    |
+| **`v-wheel`**         | Detects swipe **(`up, down`)**                 |
+
+---
+
+```html
+<template>
+  <div
+    v-ripple
+    v-wheel="log"
+    v-swipe="log"
+    v-resize="log"
+    v-click-outside="log"
+  >
+    {{ $device }}
+  </div>
+  <button v-ripple="{ color: red, center: true, class: 'some-class' }">
+    Click Me
+  </button>
+</template>
+<script>
+  export default {
+    methods: {
+      log(data) {
+        console.log(data);
+      },
+    },
+  };
+</script>
+```
 
 ---
 
@@ -56,7 +88,7 @@ npm install vuezik
 | **`x-element`** | Customizable `<html-element>` |
 
 ```html
-<x-element x-resize class="app-div">
+<x-element resize class="only-once-per-project-use-resize">
   My App Container
   <br />
   {{ $device }}
@@ -67,15 +99,14 @@ npm install vuezik
 
 ### **Props**
 
-| Name           | Description                                        | Default | Type    |
-| -------------- | -------------------------------------------------- | ------- | ------- |
-| **`css`**      | **`@emotion/css`** **Object-Style** Based          | `{}`    | Object  |
-| **`tag`**      | `<html>` **element** type for example `button`     | `div`   | String  |
-| **`v-model`**  | Requires `x-hover`                                 | `false` | Boolean |
-| **`x-hover`**  | Track mouse **`hover`**                            | `false` | Boolean |
-| **`x-wheel`**  | Track mouse **`wheel`**                            | `false` | Boolean |
-| **`x-resize`** | Update `$device` variables. Use once's per project | `false` | Boolean |
-| **`active`**   | **Element** is **`active`** ?                      | `false` | Boolean |
+| Name          | Description                                        | Default | Type    |
+| ------------- | -------------------------------------------------- | ------- | ------- |
+| **`css`**     | **`@emotion/css`** **Object-Style** Based          | `{}`    | Object  |
+| **`tag`**     | `<html>` **element** type for example `button`     | `div`   | String  |
+| **`v-model`** | Requires `hover`                                   | `false` | Boolean |
+| **`hover`**   | Track mouse **`hover`**                            | `false` | Boolean |
+| **`resize`**  | Update `$device` variables. Use once's per project | `false` | Boolean |
+| **`active`**  | **Element** is **`active`** ?                      | `false` | Boolean |
 
 ---
 
@@ -149,14 +180,12 @@ npm install vuezik
 ```html
 <template>
   <x-element
-    :css="css"
     tag="div"
-    v-model="hover"
-    x-hover
-    @xwheel="log"
-    x-wheel="horizontal"
+    @click="active = active"
     :active="active"
-    @click="active = !active"
+    hover
+    v-model="hover"
+    :css="css"
   >
     <div>
       Hello World <br />
@@ -243,7 +272,7 @@ npm install vuezik
 
 ---
 
-## Vue-**Sync**
+## Vue-**Sync** (Prop)
 
 Use `kebab-case` for the `sync` declaration and as the attribute `<div v-model:kebab-case="value" />`
 
